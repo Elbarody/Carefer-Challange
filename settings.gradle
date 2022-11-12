@@ -13,6 +13,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Carefer-Challange"
-include ':app'
-include ':basemodule'
+include ':app' ,':basemodule'
 include ':homemodule'
