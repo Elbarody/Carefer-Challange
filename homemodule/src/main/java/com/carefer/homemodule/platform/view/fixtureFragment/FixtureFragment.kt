@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.carefer.basemodule.data.models.fixturemodels.MatchesItem
 import com.carefer.basemodule.view.BaseFragment
@@ -67,7 +68,7 @@ class FixtureFragment : BaseFragment<FragmentFixtureBinding>(){
     private fun setupObservers() {
         mViewModel.fixtureResponse.observe(viewLifecycleOwner) {
             it?.let {
-                it.body()?.matches?.let { matches ->
+                it.matches.let { matches ->
                     matchesList.clear()
                     matchesList.addAll(matches)
                     matchesAdapter.addMatches(matchesList)
@@ -85,10 +86,22 @@ class FixtureFragment : BaseFragment<FragmentFixtureBinding>(){
             }
         }
 
-        mViewModel.addFavToDB.observe(viewLifecycleOwner){matchWillUpdate ->
+        mViewModel.addFavToDB.observe(viewLifecycleOwner){
+            if (it)
+                Toast.makeText(
+                    requireContext(),
+                    "Added to Favourites Successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
 
-        mViewModel.removeFavFromDB.observe(viewLifecycleOwner){matchWillUpdate ->
+        mViewModel.removeFavFromDB.observe(viewLifecycleOwner){
+            if (it)
+                Toast.makeText(
+                    requireContext(),
+                    "Removed to Favourites Successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
         }
 
         mViewModel.loading.observe(viewLifecycleOwner){

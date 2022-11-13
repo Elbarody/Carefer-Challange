@@ -16,16 +16,16 @@ class FixtureViewModel @Inject constructor(private val fixtureUseCase: FixtureUs
     : BaseViewModel() {
 
     var fixtureResponse =
-        SingleLiveEvent<Response<FixtureResponse>>()
+        SingleLiveEvent<FixtureResponse>()
 
     var favMatchesFromDB =
         SingleLiveEvent<List<MatchesItem>>()
 
     val addFavToDB =
-        SingleLiveEvent<MatchesItem>()
+        SingleLiveEvent<Boolean>()
 
     val removeFavFromDB =
-        SingleLiveEvent<MatchesItem>()
+        SingleLiveEvent<Boolean>()
 
     fun getMatches() {
         loading.postValue(true)
@@ -33,7 +33,7 @@ class FixtureViewModel @Inject constructor(private val fixtureUseCase: FixtureUs
             when (it) {
                 is Success<*> -> {
                     loading.postValue(false)
-                    val response = it.result as Response<FixtureResponse>
+                    val response = it.result as FixtureResponse
                     fixtureResponse.setValue(response)
                 }
                 is Failure<*> -> {
@@ -63,7 +63,7 @@ class FixtureViewModel @Inject constructor(private val fixtureUseCase: FixtureUs
         fixtureUseCase.addFavMatches(matchesItem) {
             when (it) {
                 is Success<*> -> {
-                    addFavToDB.setValue(matchesItem)
+                    addFavToDB.setValue(true)
                 }
                 is Failure<*> -> {
                 }
@@ -75,7 +75,7 @@ class FixtureViewModel @Inject constructor(private val fixtureUseCase: FixtureUs
         fixtureUseCase.removeMatchFromDataBase(matchesItem) {
             when (it) {
                 is Success<*> -> {
-                    removeFavFromDB.setValue(matchesItem)
+                    removeFavFromDB.setValue(true)
                 }
                 is Failure<*> -> {
                 }

@@ -4,7 +4,6 @@ import com.carefer.basemodule.data.models.fixturemodels.FixtureResponse
 import com.carefer.basemodule.data.models.fixturemodels.MatchesItem
 import com.carefer.homemodule.core.data.localdata.LocalDataSource
 import com.carefer.homemodule.core.data.remote.FixtureRemoteDataSource
-import retrofit2.Response
 import javax.inject.Inject
 
 class FixtureRepositoryImpl @Inject constructor(
@@ -12,7 +11,7 @@ class FixtureRepositoryImpl @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : FixtureRepository {
 
-    override suspend fun getMatches(): Response<FixtureResponse> =
+    override suspend fun getMatches(): FixtureResponse =
         remoteDataSource.getMatches()
 
     override suspend fun getFavouriteMatchesFromDB(): List<MatchesItem> =

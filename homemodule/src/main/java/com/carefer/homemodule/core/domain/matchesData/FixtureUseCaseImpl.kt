@@ -8,7 +8,6 @@ import com.carefer.basemodule.data.remote.coroutines.Failure
 import com.carefer.homemodule.core.data.repo.FixtureRepository
 import com.carefer.basemodule.data.remote.coroutines.Result
 import com.carefer.basemodule.data.remote.coroutines.Success
-import retrofit2.Response
 import javax.inject.Inject
 
 class FixtureUseCaseImpl @Inject constructor(
@@ -20,18 +19,18 @@ class FixtureUseCaseImpl @Inject constructor(
         coroutines.request({ fixtureRepository.getMatches() }, {
             when(it){
                 is Success<*> -> {
-                    val response = it.result as Response<FixtureResponse>
-                    val matchesList = response.body()?.matches
+                    val response = it.result as FixtureResponse
+                    val matchesList = response.matches
 
                     coroutines.request({fixtureRepository.getFavouriteMatchesFromDB()},{fav ->
                         when(fav){
                             is Success<*> -> {
                                 val favList = fav.result as  List<MatchesItem>
                                 favList.forEach {matchItemInFav ->
-                                    matchesList?.find { match -> match.id ==  matchItemInFav.id}?.isFavourite = true
+                                    matchesList.find { match -> match.id ==  matchItemInFav.id}?.isFavourite = true
                                 }
                                 if (matchesList != null) {
-                                    response.body()?.matches = matchesList
+                                    response.matches = matchesList
                                 }
                                 callback(Success(response))
                             }

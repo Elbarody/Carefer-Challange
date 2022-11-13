@@ -1,12 +1,13 @@
 package com.carefer.basemodule.data.remote.coroutines
 
+import com.carefer.basemodule.data.remote.coroutines.dispatchers.BaseCoroutineDispatcher
 import com.carefer.basemodule.data.remote.coroutines.dispatchers.RuntimeDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class CoroutinesProviderImpl @Inject constructor(private val dispatcher: RuntimeDispatcher) :
+class CoroutinesProviderImpl @Inject constructor(private val dispatcher: BaseCoroutineDispatcher) :
     CoroutinesProvider {
     override fun <T : Any> request(
         work: suspend (() -> T?),
